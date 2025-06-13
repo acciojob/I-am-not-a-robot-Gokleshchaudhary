@@ -65,3 +65,24 @@ document.getElementById('verify').addEventListener('click', () => {
     }
     document.getElementById('verify').style.display = 'none'; // Hide verify button
 });
+describe('robot blocker works correctly', () => {
+    beforeEach(() => {
+        cy.visit('http://localhost:3000'); // Ensure this URL is correct
+    });
+
+    it('checks if images are there', () => {
+        cy.get('img').should('have.length', 6); // Check if there are 6 images
+    });
+
+    it('checks if reset button is shown', () => {
+        cy.get('#reset').should('not.be.visible'); // Initially, the reset button should not be visible
+        cy.get('img').first().click(); // Simulate clicking the first image
+        cy.get('#reset').should('be.visible'); // Now it should be visible
+    });
+
+    it('checks if verify button is shown', () => {
+        cy.get('img').first().click(); // Click the first image
+        cy.get('img').eq(1).click(); // Click the second image
+        cy.get('#verify').should('be.visible'); // Verify button should be visible now
+    });
+});
